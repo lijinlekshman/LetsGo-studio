@@ -16,7 +16,11 @@ import Image from "next/image";
 import Link from "next/link";
 
 const OTPPage: React.FC = () => {
+  const [otp, setOtp] = useState("");
+  useEffect(() => {
   const router = useRouter();
+  console.log(window.location);
+}, []);
   const searchParams = useSearchParams();
 
   const [otp, setOtp] = useState("");
