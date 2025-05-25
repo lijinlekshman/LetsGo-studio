@@ -1,6 +1,7 @@
 "use client";
+export const dynamic = "force-dynamic";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -15,22 +16,41 @@ import Image from "next/image";
 import Link from "next/link";
 
 const OTPPage: React.FC = () => {
-  const [otp, setOtp] = useState("");
   const router = useRouter();
   const searchParams = useSearchParams();
-  const mobileNumber = searchParams.get("mobileNumber"); // Get mobileNumber from query parameters
+
+  const [otp, setOtp] = useState("");
+  const [mobileNumber, setMobileNumber] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const number = searchParams.get("mobileNumber");
+
+    if (!number) {
+      router.replace("/"); // Avoids pushing to history stack
+      return;
+    }
+
+    setMobileNumber(number);
+    setLoading(false);
+  }, [searchParams, router]);
 
   const verifyOTPAndBookCab = () => {
-    // Placeholder: Verify OTP logic (e.g., check against a stored OTP)
     if (otp === "123456") {
-      // Replace with actual OTP verification logic
       alert("OTP Verified! Redirecting to user dashboard...");
-      // Redirect to the user dashboard page with mobile number as a query parameter
       router.push(`/user-dashboard?mobileNumber=${mobileNumber}`);
     } else {
       alert("OTP Verification Failed: Invalid OTP. Please try again.");
     }
   };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <p>Loading...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2">
