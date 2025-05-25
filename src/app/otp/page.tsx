@@ -16,7 +16,10 @@ import Link from "next/link";
 
 const OTPPage: React.FC = () => {
   const [otp, setOtp] = useState("");
+  useEffect(() => {
   const router = useRouter();
+  console.log(window.location);
+}, []);
   const searchParams = useSearchParams();
   const mobileNumber = searchParams.get("mobileNumber"); // Get mobileNumber from query parameters
 
