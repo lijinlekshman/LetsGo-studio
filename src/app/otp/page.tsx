@@ -16,11 +16,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 const OTPPage: React.FC = () => {
-  const [otp, setOtp] = useState("");
-  useEffect(() => {
   const router = useRouter();
-  console.log(window.location);
-}, []);
   const searchParams = useSearchParams();
 
   const [otp, setOtp] = useState("");
@@ -31,12 +27,17 @@ const OTPPage: React.FC = () => {
     const number = searchParams.get("mobileNumber");
 
     if (!number) {
-      router.replace("/"); // Avoids pushing to history stack
+      router.replace("/"); // Redirect to home if mobile number is missing
       return;
     }
 
     setMobileNumber(number);
     setLoading(false);
+
+    // Debug: optional
+    if (typeof window !== "undefined") {
+      console.log(window.location);
+    }
   }, [searchParams, router]);
 
   const verifyOTPAndBookCab = () => {
